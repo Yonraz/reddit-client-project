@@ -9,15 +9,18 @@ function App() {
   const subredditSelection = useSelector(selectSubredditSelection);
   return (
     <>
-      <Container justifyContent="center" maxWidth="lg">
+      <Container maxWidth="lg">
         <Grid container spacing={3}>
           <CssBaseline />
           <Grid item xs={12}>
             <Typography variant="h2" textAlign="center">
-              miniReddit
+              mini
+              <Typography variant="span" color="salmon">
+                Reddit
+              </Typography>
             </Typography>
           </Grid>
-          <Grid item xs={2}>
+          <Grid item xs={12}>
             <SubredditSelect selection={subredditSelection} />
           </Grid>
           <Grid item xs={10}>

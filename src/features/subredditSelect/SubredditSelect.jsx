@@ -1,25 +1,17 @@
 /* eslint-disable react/prop-types */
 import { useDispatch } from "react-redux";
 import { changeSelection } from "./SubredditSelectSlice";
+import {subredditOptions} from '../subredditOptions/subredditOptions'
 import {
   FormControl,
   FormLabel,
-  RadioGroup,
-  FormControlLabel,
-  Radio,
+  ToggleButtonGroup,
+  ToggleButton,
 } from "@mui/material";
 
 export default function SubredditSelect(props) {
   const { selection } = props;
   const dispatch = useDispatch();
-  const options = [
-    "funny",
-    "science",
-    "worldnews",
-    "todayilearned",
-    "DIY",
-    "memes",
-  ];
   const handleOptionChanged = (e) => {
     if (e.target.selected) return;
     dispatch(changeSelection(e.target.value));
@@ -29,21 +21,23 @@ export default function SubredditSelect(props) {
       <FormLabel component="legend" variant="h6">
         Subreddits
       </FormLabel>
-      <RadioGroup
-        aria-label="options"
-        name="options"
+      <ToggleButtonGroup
         value={selection}
+        exclusive
         onChange={handleOptionChanged}
+        aria-label="options"
       >
-        {options.map((option) => (
-          <FormControlLabel
+        {subredditOptions.map((option) => (
+          <ToggleButton
             key={option}
             value={option}
-            control={<Radio />}
-            label={option}
-          />
+            aria-label={option}
+            selected={option === selection}
+          >
+            {option}
+          </ToggleButton>
         ))}
-      </RadioGroup>
+      </ToggleButtonGroup>
     </FormControl>
   );
 }

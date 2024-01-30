@@ -1,6 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = { thingById: {}, isLoading: false, hasError: false };
+const initialState = {
+  thingById: {},
+  isLoading: false,
+  hasError: false,
+  fetchedSubreddits: [],
+};
 export const ThingsSlice = createSlice({
   name: "things",
   initialState: initialState,
@@ -26,6 +31,9 @@ export const ThingsSlice = createSlice({
       if (thing === undefined) return;
       thing.commentIds = [...thing.commentIds, ...commentIds];
     },
+    addFetchedSubreddit(state, action) {
+      state.fetchedSubreddits.push(action.payload);
+    },
   },
 });
 export default ThingsSlice.reducer;
@@ -34,5 +42,8 @@ export const selectThings = (state) => state.things.thingById;
 export const selectThingById = (id) => (state) => state.things.thingById[id];
 // eslint-disable-next-line react-refresh/only-export-components
 export const thingsIsLoading = (state) => state.things.isLoading;
+export const selectIsSubredditFetched = (subreddit) => (state) =>
+  state.things.fetchedSubreddits.includes(subreddit);
 // eslint-disable-next-line react-refresh/only-export-components
-export const { addThing, addListOfThings, addCommentIds } = ThingsSlice.actions;
+export const { addThing, addListOfThings, addCommentIds, addFetchedSubreddit } =
+  ThingsSlice.actions;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import useFetchCommentsForPost from "../../hooks/useFetchComments";
 import { addComments } from "../comments/CommentsSlice";
 import { addCommentIds, selectThingById } from "./ThingsSlice";
