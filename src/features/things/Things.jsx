@@ -1,35 +1,38 @@
+/* eslint-disable react/prop-types */
 import { useDispatch, useSelector } from "react-redux";
-import { selectThings, thingsIsLoading, getThings } from "./ThingsSlice";
-import { useEffect, useState } from "react";
-
-export default function Things() {
+import { selectThings, addListOfThings } from "./ThingsSlice";
+import { useEffect } from "react";
+import { useFetchApi } from "../../hooks/useFetchApi";
+import Thing from "./Thing";
+import Card from "@mui/material/Card";
+import { Grid } from "@mui/material";
+export default function Things({ subredditSelection }) {
   const things = useSelector(selectThings);
-  const [thingsList, setThingsList] = useState([]);
-  const isLoading = useSelector(thingsIsLoading);
+  const [data, isLoading, hasError] = useFetchApi(subredditSelection);
   const dispatch = useDispatch();
-
   useEffect(() => {
-    dispatch(getThings);
-    const newThings = things !== undefined ? Object.values(things) : [];
-    setThingsList(newThings);
-  }, []);
-
-  function handleClick() {
-    dispatch(getThings);
-    console.log("things have arrived my boy" + things);
-  }
+    if (data.length === 0) return;
+    dispatch(addListOfThings(data));
+  }, [data]);
+  useEffect(() => {
+    if (data.length === 0) return;
+    dispatch(addListOfThings(data));
+  }, [subredditSelection]);
 
   return (
     <>
-      <button onClick={handleClick}>clickccccccccc</button>
       <div>{isLoading && <p>Loading...</p>}</div>
-      {!isLoading &&
-        thingsList.map((thing) => (
-          <div key={thing.id}>
-            <h1>{thing.title}</h1>
-            <p>{thing.description}</p>
-          </div>
-        ))}
+      <Grid container>
+        {!isLoading &&
+          Object.values(things).map((thing) => (
+            <Grid key={thing.id} item xs={12} sx={{ margin: "1rem 0" }}>
+              <Card sx={{ maxWidth: "450px" }}>
+                <Thing id={thing.id} />
+              </Card>
+            </Grid>
+          ))}
+      </Grid>
+      <div>{hasError && <div>some error occured</div>}</div>
     </>
   );
 }

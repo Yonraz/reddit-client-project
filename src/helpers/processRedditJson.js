@@ -1,26 +1,23 @@
 export const processRedditResponse = (json) => {
-  const things = {};
+  const things = [];
 
   json.data.children.forEach((child) => {
     const { data } = child;
     const thing = {
-      title: data.link_title,
       id: data.id,
+      title: data.title,
+      name: data.name,
       authorId: data.author_fullname,
       authorName: data.author,
-      imageUrl: data.link_url,
-      description: data.body,
+      thumbnailUrl: data.thumbnail,
+      imageUrl: data.url_overridden_by_dest,
+      description: data.selftext,
       numLikes: data.ups,
       numComments: data.num_comments,
       commentIds: [],
+      subreddit: data.subreddit_name_prefixed,
     };
-
-    const permalinkParts = data.permalink.split("/");
-    const commentId = permalinkParts[permalinkParts.length - 1];
-
-    thing.commentIds.push(commentId);
-
-    things[thing.id] = thing;
+    things.push(thing);
   });
 
   return things;
