@@ -22,9 +22,9 @@ interface ThingInterface {
   commentIds: string[];
 }
 
-export default function Thing(props: { id: string }) {
-  const { id } = props;
-  const thing: ThingInterface = useSelector(selectThingById(id));
+export default function Thing(props: { id: string, subreddit: string }) {
+  const { id, subreddit } = props;
+  const thing: ThingInterface = useSelector(selectThingById(subreddit, id));
   const dispatch = useDispatch();
   const [commentsForPost, fetchCommentsForPost, isLoadingComments] =
     useFetchCommentsForPost();

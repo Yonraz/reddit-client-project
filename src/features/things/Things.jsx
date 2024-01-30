@@ -1,6 +1,11 @@
 /* eslint-disable react/prop-types */
 import { useDispatch, useSelector } from "react-redux";
-import { selectThings, addListOfThings, selectIsSubredditFetched, addFetchedSubreddit } from "./ThingsSlice";
+import {
+  selectThings,
+  addListOfThings,
+  selectIsSubredditFetched,
+  addFetchedSubreddit,
+} from "./ThingsSlice";
 import { useEffect, useState } from "react";
 import { useFetchApi } from "../../hooks/useFetchApi";
 import Thing from "./Thing";
@@ -14,8 +19,8 @@ export default function Things({ subredditSelection }) {
   const dispatch = useDispatch();
   useEffect(() => {
     if (data.length === 0) return;
-    dispatch(addListOfThings(data));
-    dispatch(addFetchedSubreddit(subredditSelection))
+    dispatch(addListOfThings({ subreddit: subredditSelection, things: data }));
+    dispatch(addFetchedSubreddit(subredditSelection));
   }, [subredditSelection, data]);
   const handleShowMore = () => {
     setSlicePoint((prev) => prev + 5);
@@ -28,7 +33,7 @@ export default function Things({ subredditSelection }) {
           thingsToDisplay.map((thing) => (
             <Grid key={thing.id} item xs={12} sx={{ margin: "1rem 0" }}>
               <Card sx={{ maxWidth: "550px" }}>
-                <Thing id={thing.id} />
+                <Thing id={thing.id} subreddit={subredditSelection} />
               </Card>
             </Grid>
           ))}
